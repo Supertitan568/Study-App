@@ -60,6 +60,27 @@ def create_flashcard_creation_menu(window):
     submit_button = tk.Button(window, text="Create Deck", command=lambda: flashcard_creation_callback(new_flashcard_deck))
     submit_button.place(relx=0.5, rely=0.9, relheight=0.1, relwidth=0.2 )
 
+def flashcard_deletion_callback(flashcard_decks:list, deck_index):
+    flashcard_decks.pop(deck_index)
+    ffh.write_new_flashcard_decks(flashcard_decks)
+    exit()
+
+def create_flashcard_deletion_menu(window, flashcard_decks:list):
+    for widget in window.place_slaves():
+        widget.destroy()
+    
+    l = tk.Label(window, text="Select a deck")
+    l.place(relx=0.1, rely=0.0, relwidth=0.8, relheight=0.2)
+
+    selection_box = tk.Listbox(window, selectmode=tk.SINGLE)
+    selection_box.place(relx=0.1, rely=0.2, relwidth=0.8, relheight=0.6)
+
+    for i, deck in enumerate(flashcard_decks):
+        selection_box.insert(i + 1, "Deck" + str(i + 1))
+
+    submit_button = tk.Button(window, text="Delete Deck", command=lambda: flashcard_deletion_callback(flashcard_decks, (selection_box.curselection())[0]))
+    submit_button.place(relx=0.3, rely=0.9, relheight=0.1, relwidth=0.4 )
+
 def create_main_menu():
     window = tk.Tk()
     window.title("Study App")
@@ -70,7 +91,7 @@ def create_main_menu():
     create_button = tk.Button(window, text="Create Deck", command=lambda: create_flashcard_creation_menu(window))
     create_button.place(relx=0.1, rely=0.1, relwidth=0.2, relheight=0.6)
 
-    delete_button = tk.Button(window, text="Delete Deck")
+    delete_button = tk.Button(window, text="Delete Deck", command=lambda: create_flashcard_deletion_menu(window, flashcards))
     delete_button.place(relx=0.4, rely=0.1, relwidth=0.2, relheight=0.6)
 
     study_button = tk.Button(window, text="Study Deck", command=lambda: create_flashcard_selection_menu(window, flashcards))

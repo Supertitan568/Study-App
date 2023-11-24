@@ -5,10 +5,6 @@ class flashcard:
         self.front = front
         self.back = back
 
-front = True
-flashcards = [flashcard("Who is my favorite girl in the world", "My girlfriend"), flashcard("What do I want to do", "Graduate"), flashcard("What is my favorite language", "The C Language")]
-flashcard_index = 0
-
 def next_button_callback():
     global flashcard_index
     global front
@@ -39,14 +35,18 @@ def prev_button_callback():
         textbox.config(text=flashcards[flashcard_index].back)
         front = False
 
-def main(window):
+def main(window, flashcard_deck):
     global front
-    global flashcard
+    global flashcards
     global flashcard_index
     global textbox
     
+    flashcards = flashcard_deck
+
+    for widget in window.place_slaves():
+        widget.destroy()
+    
     front = True
-    flashcards = [flashcard("Who is my favorite girl in the world", "My girlfriend"), flashcard("What do I want to do", "Graduate"), flashcard("What is my favorite language", "The C Language")]
     flashcard_index = 0
 
     next_button = tk.Button(window, text = "Next", command=next_button_callback)
@@ -57,8 +57,3 @@ def main(window):
  
     textbox = tk.Label(text=flashcards[flashcard_index].front)
     textbox.place(relx = 0.5, rely = 0.5, anchor = tk.CENTER)
-
-    window.geometry("600x400")
-
-    window.mainloop()
-
